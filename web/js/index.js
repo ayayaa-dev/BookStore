@@ -45,9 +45,10 @@ function toggleBtnLogin(){
         toggleShowMenu();
         infoElement.innerHTML = "Вы вышли";
     }else{
-        hiddenBtnLogin();
-        toggleShowMenu();
-        infoElement.innerHTML = "Вы вошли";
+        showLoginForm();
+//        hiddenBtnLogin();
+//        toggleShowMenu();
+//        infoElement.innerHTML = "Вы вошли";
     }
 }
 function showBtnLogin(){
@@ -59,6 +60,7 @@ function hiddenBtnLogin(){
     isDebug("Прячем кнопку Вход")
     menuLogin.classList.add("d-none");
     menuLogout.classList.remove("d-none");
+    
 }
 
 function toggleShowMenu(){
@@ -95,4 +97,52 @@ function deactiveMenu(activeMenuBtn){
             listNavLinks[i].classList.remove('active');
         }
     }
+}
+
+function showLoginForm(){
+    const content = document.getElementById('content');
+    content.innerHTML = `
+<div class="card border-secondary mb-3 mx-auto" style="max-width: 30rem;">
+    <h3 class="card-header w-100 text-center ">Авторизация</h3>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="login" class="form-label mt-4">Логин</label>
+        <input type="text" class="form-control" id="login" placeholder="Login">
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label mt-4">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password">
+      </div>
+      <button id='button_login' type="submit" class="btn btn-primary my-3">Войти</button>
+    </div>
+</div>`;
+    const buttonLogin = document.getElementById("button_login");
+    buttonLogin.addEventListener('click', (e)=>{
+        e.preventDefault();
+        sendCredential();
+    })
+}
+async function  sendCredential(){
+    const login = document.getElementById('login').value;
+    const password = document.getElementById('password').value;
+    const credendial = {
+        "login": login,
+        "password": password,
+    }
+    const response = await fetch('login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset:utf8'
+        },
+        body: JSON.stringify(credendial)
+    })
+            then(response => response.json())
+            .then(response => alert(response.info));
+    
+//    if(response.ok){
+//        const result = response.json();
+//        document.getElementById('info').innerHTML = result.info;
+//    }else{
+//        document.getElementById('info').innerHTML = "Ошибка: "+response;
+//    }
 }

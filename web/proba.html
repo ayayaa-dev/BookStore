@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>JPTV20WebShop</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/zephyr-bootstrap.min.css" />
+        <link rel="stylesheet" href="css/index.css" />
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#" id="menu_book_shop">BookShop</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                      <li class="nav-item">
+                         <a class="nav-link d-none " href="#"  id="menu_add_author">Добавить автора</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link d-none" href="#" id="menu_add_book">Добавить книгу</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link d-none" href="#" id="menu_purchaces">Покупки</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link d-none" href="#" id="menu_profile">Профиль</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link d-none" href="#" id="menu_admin_panel">Панель администратора</a>
+                      </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link" href="#" id="menu_login">Войти
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link d-none" href="#"  id="menu_logout">Выйти</a>
+                      </li>
+                    </ul>
+                    <form class="d-flex">
+                      <input class="form-control me-sm-2" type="text" placeholder="Search">
+                      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                  </div>
+                </div>
+            </nav>
+            <p id="info" class="text-info w-100 text-center py-1">&nbsp;</p>
+        </header>  
+        <div id="content" class="flex-grow-1">
+            <div class="card border-secondary mb-3 mx-auto" style="max-width: 30rem;">
+                <h3 class="card-header w-100 text-center ">Авторизация</h3>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputPassword1" class="form-label mt-4">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1" class="form-label mt-4">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  </div>
+                  <button type="submit" class="btn btn-primary my-3">Submit</button>
+                </div>
+            </div>
+        </div>
+        <footer class="footer d-flex justify-content-center bg-primary text-light py-2">IVKHK 2022</footer>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      <script src="js/index.js"></script>
+    </body>
+</html>
