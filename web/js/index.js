@@ -122,27 +122,39 @@ function showLoginForm(){
         sendCredential();
     })
 }
-async function  sendCredential(){
+function  sendCredential(){
     const login = document.getElementById('login').value;
     const password = document.getElementById('password').value;
     const credendial = {
         "login": login,
         "password": password,
     }
-    const response = await fetch('login', {
+    //Посылаем запрос а с паттерном 'login', методом POST и телом body в формате JSON
+    // возвращается обещание (Promise) со статусом "ожидание"
+    let promise = fetch('login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset:utf8'
         },
-        body: JSON.stringify(credendial)
+        body: JSON.stringify(credendial) 
     })
-            then(response => response.json())
-            .then(response => alert(response.info));
-    
-//    if(response.ok){
-//        const result = response.json();
-//        document.getElementById('info').innerHTML = result.info;
-//    }else{
-//        document.getElementById('info').innerHTML = "Ошибка: "+response;
-//    }
+    // Обрабатываем обещание с помощью then
+    promise.then(response => response.json()) //переводим обещание в статус выполнено 
+                                              // и преобразовываем JSON в JavaScript object
+           .then(response => {// обрабатываем object полученый из обещания
+                document.getElementById('info').innerHTML = response.info;
+                if(response.auth){
+                    showBtnsMenu();
+                    hiddenBtnLogin();
+                    document.getElementById('content').innerHTML = "";
+                }
+           })
+           .catch(response =>{
+                document.getElementById('info').innerHTML = "Ошибка сервера";
+                hiddenBtnsMenu();
+                showBtnLogin();
+                document.getElementById('content').innerHTML = "";
+           })
+               
+           
 }

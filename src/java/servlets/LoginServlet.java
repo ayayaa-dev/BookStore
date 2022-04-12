@@ -11,7 +11,6 @@ import entity.User;
 import entity.UserRoles;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -98,6 +97,7 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
          request.setCharacterEncoding("UTF-8");
          HttpSession session = null;
+         JsonObjectBuilder job = Json.createObjectBuilder();
          String path = request.getServletPath();
         switch (path) {
             case "/login":
@@ -107,29 +107,29 @@ public class LoginServlet extends HttpServlet {
                 String password = jsonObject.getString("password","");
                 User authUser = userFacade.findByLogin(login);
                 if(authUser == null){
-                    String json = "{\"info\": \"Нет такого пользователя\"}";
+                    job.add("info", "Нет такого пользователя")
+                       .add("auth",false);
                     try (PrintWriter out = response.getWriter()) {
-                        out.println(json);
+                        out.println(job.build().toString());
                     }
                     break;
                 }
                 PasswordProtected pp = new PasswordProtected();
                 password = pp.getProtectedPassword(password, authUser.getSalt());
                 if(!password.equals(authUser.getPassword())){
-                    String json = "{\"info\": \"Неверный пароль\"}";
+                    job.add("info", "Неверный пароль")
+                       .add("auth",false);
                     try (PrintWriter out = response.getWriter()) {
-                        out.println(json);
+                        out.println(job.build().toString());
                     }
                     break;
                 }
                 session = request.getSession(true);
                 session.setAttribute("authUser", authUser);
-                JsonObjectBuilder job = Json.createObjectBuilder();
-                job.add("info", "Вы вошли как "+authUser.getLogin());
-                String json = job.build().toString();
-                //String json = "{\"info\": \"Вы вошли как "+authUser.getLogin()+"\"}";
+                job.add("info", "Вы вошли как "+authUser.getLogin())
+                   .add("auth",true);
                 try (PrintWriter out = response.getWriter()) {
-                        out.println(json);
+                    out.println(job.build().toString());
                 }
                 break;
             case "/logout":
