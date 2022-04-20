@@ -1,3 +1,6 @@
+import {viewModule} from './ViewModule.js';
+
+export {showBtnLogin, showBtnsMenu, hiddenBtnLogin, hiddenBtnsMenu};
 var debug = true;
 function isDebug(message){
     if(debug) console.log(message);
@@ -11,6 +14,7 @@ const menuAddAuthor = document.getElementById("menu_add_author");
 menuAddAuthor.addEventListener('click', e => {
     e.preventDefault();
     activeBtnMenu(menuAddAuthor);
+    viewModule.showNewAuthorForm();
 });
 const menuAddBook = document.getElementById("menu_add_book");
 menuAddBook.addEventListener('click', e=>{
@@ -45,7 +49,7 @@ function toggleBtnLogin(){
         toggleShowMenu();
         infoElement.innerHTML = "Вы вышли";
     }else{
-        showLoginForm();
+        viewModule.showLoginForm();
 //        hiddenBtnLogin();
 //        toggleShowMenu();
 //        infoElement.innerHTML = "Вы вошли";
@@ -99,62 +103,4 @@ function deactiveMenu(activeMenuBtn){
     }
 }
 
-function showLoginForm(){
-    const content = document.getElementById('content');
-    content.innerHTML = `
-<div class="card border-secondary mb-3 mx-auto" style="max-width: 30rem;">
-    <h3 class="card-header w-100 text-center ">Авторизация</h3>
-    <div class="card-body">
-      <div class="form-group">
-        <label for="login" class="form-label mt-4">Логин</label>
-        <input type="text" class="form-control" id="login" placeholder="Login">
-      </div>
-      <div class="form-group">
-        <label for="password" class="form-label mt-4">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password">
-      </div>
-      <button id='button_login' type="submit" class="btn btn-primary my-3">Войти</button>
-    </div>
-</div>`;
-    const buttonLogin = document.getElementById("button_login");
-    buttonLogin.addEventListener('click', (e)=>{
-        e.preventDefault();
-        sendCredential();
-    })
-}
-function  sendCredential(){
-    const login = document.getElementById('login').value;
-    const password = document.getElementById('password').value;
-    const credendial = {
-        "login": login,
-        "password": password,
-    }
-    //Посылаем запрос а с паттерном 'login', методом POST и телом body в формате JSON
-    // возвращается обещание (Promise) со статусом "ожидание"
-    let promise = fetch('login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset:utf8'
-        },
-        body: JSON.stringify(credendial) 
-    })
-    // Обрабатываем обещание с помощью then
-    promise.then(response => response.json()) //переводим обещание в статус выполнено 
-                                              // и преобразовываем JSON в JavaScript object
-           .then(response => {// обрабатываем object полученый из обещания
-                document.getElementById('info').innerHTML = response.info;
-                if(response.auth){
-                    showBtnsMenu();
-                    hiddenBtnLogin();
-                    document.getElementById('content').innerHTML = "";
-                }
-           })
-           .catch(response =>{
-                document.getElementById('info').innerHTML = "Ошибка сервера";
-                hiddenBtnsMenu();
-                showBtnLogin();
-                document.getElementById('content').innerHTML = "";
-           })
-               
-           
-}
+
