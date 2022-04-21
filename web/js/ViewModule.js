@@ -45,7 +45,7 @@ class ViewModule{
                     <input type="text" class="form-control" id="birth_year" placeholder="Год рождения"  value="">
                   </div>
                   <button id="btn_add_author" type="submit" class="btn btn-primary my-3">Добавить автора</button>
-                  <button id="btn_edit_author" type="submit" class="btn btn-primary my-3 d-none">Изменить автора</button>
+                  <button id="btn_update_author" type="submit" class="btn btn-primary my-3 d-none">Изменить автора</button>
                 </div>
             </div>
             <div class="card border-0 mb-3 mx-auto" style="max-width: 50rem;">
@@ -62,18 +62,17 @@ class ViewModule{
             e.preventDefault();
             authorModule.createNewAuthor();
         });
-        document.getElementById('btn_edit_author').addEventListener('click',(e)=>{
+        document.getElementById('btn_update_author').addEventListener('click',(e)=>{
             e.preventDefault();
-            //authorModule.updateAuthor();
+            authorModule.updateAuthor();
             document.getElementById('btn_add_author').classList.remove('d-none');
-            document.getElementById('btn_edit_author').classList.add('d-none');
+            document.getElementById('btn_update_author').classList.add('d-none');
         });
         document.getElementById('select_authors').addEventListener('change',(e)=>{
             e.preventDefault();
-            
             authorModule.editAuthor();
             document.getElementById('btn_add_author').classList.add('d-none');
-            document.getElementById('btn_edit_author').classList.remove('d-none');
+            document.getElementById('btn_update_author').classList.remove('d-none');
         });
         authorModule.insertListAuthors();
     };

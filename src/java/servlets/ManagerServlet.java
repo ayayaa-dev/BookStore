@@ -40,6 +40,7 @@ import tools.PasswordProtected;
     "/createNewAuthor",
     "/getListAuthors",
     "/getAuthor",
+    "/updateAuthor",
   
 })
 public class ManagerServlet extends HttpServlet {
@@ -112,6 +113,24 @@ public class ManagerServlet extends HttpServlet {
                 job.add("info", "Редактируем автора: "+author.getFirstname()+" "+author.getLastname());
                 job.add("status", true);
                 job.add("author", ajb.getAuthorJsonObject(author));
+                try (PrintWriter out = response.getWriter()) {
+                    out.println(job.build().toString());
+                }
+                break;
+            case "/updateAuthor":
+                jsonReader = Json.createReader(request.getReader());
+                jsonObject = jsonReader.readObject();
+                authorId = jsonObject.getString("authorId","");
+                firstname = jsonObject.getString("firstname","");
+                lastname = jsonObject.getString("lastname","");
+                birthYear = jsonObject.getString("birthYear","");
+                Author updateAuthor = authorFacade.find(Long.parseLong(authorId));
+                updateAuthor.setBirthYear(Integer.parseInt(birthYear));
+                updateAuthor.setLastname(lastname);
+                updateAuthor.setFirstname(firstname);
+                authorFacade.edit(updateAuthor);
+                job.add("info", "Автор изменен");
+                job.add("status", true);
                 try (PrintWriter out = response.getWriter()) {
                     out.println(job.build().toString());
                 }

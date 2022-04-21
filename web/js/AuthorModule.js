@@ -45,6 +45,7 @@ class AuthorModule{
                 .then(response =>{
                     if(response.status){
                         const select = document.getElementById('select_authors');
+                        select.options.length=0;
                         for(let i=0; i<response.authors.length; i++){
                             const option = document.createElement('option');
                             option.text = response.authors[i].firstname+' '+response.authors[i].lastname;
@@ -82,6 +83,38 @@ class AuthorModule{
                        document.getElementById('birth_year').value = response.author.birthYear;
                    }else{
                        document.getElementById('info').value = response.info;
+                   }
+                })
+                .catch(error=>{
+                    document.getElementById('info').innerHTML = 'Ошибка сервера: '+error;
+                });
+    }
+    updateAuthor(){
+        const authorId = document.getElementById("author_id").value;
+        const firstname = document.getElementById("firstname").value;
+        const lastname = document.getElementById("lastname").value;
+        const birthYear = document.getElementById("birth_year").value;
+        const updateUser = {
+            "authorId": authorId,
+            "firstname": firstname,
+            "lastname": lastname,
+            "birthYear": birthYear,
+        };
+        const promiseAuthor = fetch('updateAuthor',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset:utf8'
+            },
+            body: JSON.stringify(updateUser)
+        });
+        promiseAuthor
+                .then(response => response.json())
+                .then(response =>{
+                   if(response.status){
+                       document.getElementById('info').innerHTML = 'Автор изменен';
+                       viewModule.showNewAuthorForm();
+                   }else{
+                       document.getElementById('info').innerHTML = 'Автора изменить не удалось';
                    }
                 })
                 .catch(error=>{
