@@ -1,6 +1,7 @@
 import {viewModule} from './ViewModule.js';
+import {loginModule} from './LoginModule.js';
 
-export {showBtnLogin, showBtnsMenu, hiddenBtnLogin, hiddenBtnsMenu};
+export {checkMenu};
 var debug = true;
 function isDebug(message){
     if(debug) console.log(message);
@@ -36,60 +37,68 @@ menuAdminPanel.addEventListener('click', e => {
     e.preventDefault();
     activeBtnMenu(menuAdminPanel);
 });
-const infoElement = document.getElementById("info");
 const menuLogin = document.getElementById("menu_login");
-menuLogin.addEventListener('click',toggleBtnLogin);
+menuLogin.addEventListener('click',(e)=>{
+    e.preventDefault();
+    activeBtnMenu(null);
+    viewModule.showLoginForm();
+});
 const menuLogout = document.getElementById("menu_logout");
-menuLogout.addEventListener('click',toggleBtnLogin);
+menuLogout.addEventListener('click',e=>{
+    e.preventDefault();
+    activeBtnMenu(null);
+    loginModule.logout();
+});
+const infoElement = document.getElementById("info");
 
-function toggleBtnLogin(){
-    isDebug("Переключаем меню входа")
-    if(menuLogin.classList.contains("d-none")){
-        showBtnLogin();
-        toggleShowMenu();
-        infoElement.innerHTML = "Вы вышли";
-    }else{
-        viewModule.showLoginForm();
-//        hiddenBtnLogin();
+//function toggleBtnLogin(){
+//    isDebug("Переключаем меню входа")
+//    if(menuLogin.classList.contains("d-none")){
+//        showBtnLogin();
 //        toggleShowMenu();
-//        infoElement.innerHTML = "Вы вошли";
-    }
-}
-function showBtnLogin(){
-    isDebug("Показываем кнопку Вход");
-    menuLogin.classList.remove("d-none");
-    menuLogout.classList.add("d-none");
-}
-function hiddenBtnLogin(){
-    isDebug("Прячем кнопку Вход")
-    menuLogin.classList.add("d-none");
-    menuLogout.classList.remove("d-none");
-    
-}
-
-function toggleShowMenu(){
-    if(menuAddAuthor.classList.contains("d-none")){
-        showBtnsMenu();
-    }else{
-        hiddenBtnsMenu();
-    }
-}
-function showBtnsMenu(){
-    menuAddAuthor.classList.remove("d-none");
-    menuAddBook.classList.remove("d-none");
-    menuPurchaces.classList.remove("d-none");
-    menuProfile.classList.remove("d-none");
-    menuAdminPanel.classList.remove("d-none");
-}
-function hiddenBtnsMenu(){
-    menuAddAuthor.classList.add("d-none");
-    menuAddBook.classList.add("d-none");
-    menuPurchaces.classList.add("d-none");
-    menuProfile.classList.add("d-none");
-    menuAdminPanel.classList.add("d-none");
-}
+//        infoElement.innerHTML = "Вы вышли";
+//    }else{
+//        viewModule.showLoginForm();
+////        hiddenBtnLogin();
+////        toggleShowMenu();
+////        infoElement.innerHTML = "Вы вошли";
+//    }
+//}
+//function showBtnLogin(){
+//    isDebug("Показываем кнопку Вход");
+//    menuLogin.classList.remove("d-none");
+//    menuLogout.classList.add("d-none");
+//}
+//function hiddenBtnLogin(){
+//    isDebug("Прячем кнопку Вход")
+//    menuLogin.classList.add("d-none");
+//    menuLogout.classList.remove("d-none");
+//    
+//}
+//
+//function toggleShowMenu(){
+//    if(menuAddAuthor.classList.contains("d-none")){
+//        showBtnsMenu();
+//    }else{
+//        hiddenBtnsMenu();
+//    }
+//}
+//function showBtnsMenu(){
+//    menuAddAuthor.classList.remove("d-none");
+//    menuAddBook.classList.remove("d-none");
+//    menuPurchaces.classList.remove("d-none");
+//    menuProfile.classList.remove("d-none");
+//    menuAdminPanel.classList.remove("d-none");
+//}
+//function hiddenBtnsMenu(){
+//    menuAddAuthor.classList.add("d-none");
+//    menuAddBook.classList.add("d-none");
+//    menuPurchaces.classList.add("d-none");
+//    menuProfile.classList.add("d-none");
+//    menuAdminPanel.classList.add("d-none");
+//}
 function activeBtnMenu(activeMenuBtn){
-    if(!activeMenuBtn.classList.contains("active")){
+    if(activeMenuBtn !== null && !activeMenuBtn.classList.contains("active")){
         activeMenuBtn.classList.add("active");
     }
     deactiveMenu(activeMenuBtn);
@@ -102,5 +111,105 @@ function deactiveMenu(activeMenuBtn){
         }
     }
 }
+function checkMenu() {
+    const role = null;
+    if(sessionStorage.getItem('role') === null){
+        if(!menuAddAuthor.classList.contains('d-none')){
+            menuAddAuthor.classList.add("d-none");
+        }
+        if(!menuAddBook.classList.contains('d-none')){
+            menuAddBook.classList.add("d-none");
+        }
+        if(!menuPurchaces.classList.contains('d-none')){
+            menuPurchaces.classList.add("d-none");
+        }
+        if(!menuProfile.classList.contains('d-none')){
+            menuProfile.classList.add("d-none");
+        }
+        if(!menuAdminPanel.classList.contains('d-none')){
+            menuAdminPanel.classList.add("d-none");
+        }
+        if(menuLogin.classList.contains('d-none')){
+            menuLogin.classList.remove("d-none");
+        }
+        if(!menuLogout.classList.contains('d-none')){
+            menuLogout.classList.add("d-none");
+        }
+        return;
+    }
+    role = sessionStorage.getItem('role');
+    if(role === 'USER'){
+        if(!menuAddAuthor.classList.contains('d-none')){
+            menuAddAuthor.classList.add("d-none");
+        }
+        if(!menuAddBook.classList.contains('d-none')){
+            menuAddBook.classList.add("d-none");
+        }
+        if(menuPurchaces.classList.contains('d-none')){
+            menuPurchaces.classList.remove("d-none");
+        }
+        if(menuProfile.classList.contains('d-none')){
+            menuProfile.classList.remove("d-none");
+        }
+        if(!menuAdminPanel.classList.contains('d-none')){
+            menuAdminPanel.classList.add("d-none");
+        }
+        if(!menuLogin.classList.contains('d-none')){
+            menuLogin.classList.add("d-none");
+        }
+        if(menuLogout.classList.contains('d-none')){
+            menuLogout.classList.remove("d-none");
+        }
+        return;
+    }
+    if(role === 'MANAGER'){
+        if(menuAddAuthor.classList.contains('d-none')){
+            menuAddAuthor.classList.remove("d-none");
+        }
+        if(menuAddBook.classList.contains('d-none')){
+            menuAddBook.classList.remove("d-none");
+        }
+        if(menuPurchaces.classList.contains('d-none')){
+            menuPurchaces.classList.remove("d-none");
+        }
+        if(menuProfile.classList.contains('d-none')){
+            menuProfile.classList.remove("d-none");
+        }
+        if(!menuAdminPanel.classList.contains('d-none')){
+            menuAdminPanel.classList.add("d-none");
+        }
+        if(!menuLogin.classList.contains('d-none')){
+            menuLogin.classList.add("d-none");
+        }
+        if(menuLogout.classList.contains('d-none')){
+            menuLogout.classList.remove("d-none");
+        }
+        return;
+    }
+    if(role === 'ADMINISTRATOR'){
+        if(menuAddAuthor.classList.contains('d-none')){
+            menuAddAuthor.classList.remove("d-none");
+        }
+        if(menuAddBook.classList.contains('d-none')){
+            menuAddBook.classList.remove("d-none");
+        }
+        if(menuPurchaces.classList.contains('d-none')){
+            menuPurchaces.classList.remove("d-none");
+        }
+        if(menuProfile.classList.contains('d-none')){
+            menuProfile.classList.remove("d-none");
+        }
+        if(menuAdminPanel.classList.contains('d-none')){
+            menuAdminPanel.classList.remove("d-none");
+        }
+        if(!menuLogin.classList.contains('d-none')){
+            menuLogin.classList.add("d-none");
+        }
+        if(menuLogout.classList.contains('d-none')){
+            menuLogout.classList.remove("d-none");
+        }
+        return;
+    }
+}checkMenu();
 
 

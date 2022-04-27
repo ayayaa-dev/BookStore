@@ -1,4 +1,4 @@
-import {showBtnLogin, showBtnsMenu, hiddenBtnLogin, hiddenBtnsMenu} from './App.js';
+import {checkMenu} from './App.js';
 class LoginModule{
     
     sendCredential(){
@@ -15,6 +15,7 @@ class LoginModule{
             headers: {
                 'Content-Type': 'application/json;charset:utf8'
             },
+            credentials: 'include',
             body: JSON.stringify(credendial) 
         })
         // Обрабатываем обещание с помощью then
@@ -23,19 +24,42 @@ class LoginModule{
                .then(response => {// обрабатываем object полученый из обещания
                     document.getElementById('info').innerHTML = response.info;
                     if(response.auth){
-                        showBtnsMenu();
-                        hiddenBtnLogin();
+                        sessionStorage.setItem('user',response.user);
+                        sessionStorage.setItem('role',response.role);
+                        checkMenu();
                         document.getElementById('content').innerHTML = "";
                     }
                })
                .catch(error =>{
                     document.getElementById('info').innerHTML = "Ошибка сервера: "+error;
-                    hiddenBtnsMenu();
-                    showBtnLogin();
+                    checkMenu();
                     document.getElementById('content').innerHTML = "";
                })
 
 
+    }
+    logout(){
+        let promiseLogout = fetch('logout', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset:utf8'
+            },
+            credentials: 'include',
+        })
+        // Обрабатываем обещание с помощью then
+        promiseLogout.then(response => response.json()) 
+           .then(response => {// обрабатываем object полученый из обещания
+                document.getElementById('info').innerHTML = response.info;
+                if(!response.auth){
+                    if(sessionStorage.getItem('user')){
+                        sessionStorage.removeItem('user');
+                    }
+                    if(sessionStorage.getItem('role')){
+                        sessionStorage.removeItem('role');
+                    }
+                   checkMenu();
+                }
+            });
     }
 }
 

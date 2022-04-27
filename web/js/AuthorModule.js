@@ -46,8 +46,12 @@ class AuthorModule{
                     if(response.status){
                         const select = document.getElementById('select_authors');
                         select.options.length=0;
+                        let option = document.createElement('option');
+                            option.text = "Выберите автора";
+                            option.value = '';
+                            select.add(option);
                         for(let i=0; i<response.authors.length; i++){
-                            const option = document.createElement('option');
+                            option = document.createElement('option');
                             option.text = response.authors[i].firstname+' '+response.authors[i].lastname;
                             option.value = response.authors[i].id;
                             select.add(option);

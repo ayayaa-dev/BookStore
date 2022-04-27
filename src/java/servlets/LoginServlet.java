@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import jsontools.RoleJsonBuilder;
+import jsontools.UserJsonBuilder;
 import session.ReaderFacade;
 import session.RoleFacade;
 import session.UserFacade;
@@ -124,10 +126,14 @@ public class LoginServlet extends HttpServlet {
                     }
                     break;
                 }
+                Role role = userRolesFacade.getRoleForUser(authUser);
                 session = request.getSession(true);
                 session.setAttribute("authUser", authUser);
                 job.add("info", "Вы вошли как "+authUser.getLogin())
-                   .add("auth",true);
+                   .add("auth",true)
+                   .add("user", new UserJsonBuilder().getUserJsonObject(authUser))
+                   .add("role", new RoleJsonBuilder().getRoleJsonObject(role));
+                
                 try (PrintWriter out = response.getWriter()) {
                     out.println(job.build().toString());
                 }

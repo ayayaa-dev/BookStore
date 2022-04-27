@@ -29,7 +29,7 @@ class ViewModule{
         const content = document.getElementById('content');
         content.innerHTML = 
             `<div class="card border-secondary mb-3 mx-auto" style="max-width: 30rem;">
-                <h3 class="card-header w-100 text-center ">Добавление автора</h3>
+                <h3 id="titlePageAuthor" class="card-header w-100 text-center ">Добавление автора</h3>
                 <div class="card-body">
                   <div class="form-group">
                     <label for="firstname" class="form-label mt-4">Имя</label>
@@ -67,12 +67,14 @@ class ViewModule{
             authorModule.updateAuthor();
             document.getElementById('btn_add_author').classList.remove('d-none');
             document.getElementById('btn_update_author').classList.add('d-none');
+            document.getElementById('titlePageAuthor').innerHTML = 'Добавление автора';
         });
         document.getElementById('select_authors').addEventListener('change',(e)=>{
             e.preventDefault();
             authorModule.editAuthor();
             document.getElementById('btn_add_author').classList.add('d-none');
             document.getElementById('btn_update_author').classList.remove('d-none');
+            document.getElementById('titlePageAuthor').innerHTML = 'Редактирование данных автора';
         });
         authorModule.insertListAuthors();
     };
