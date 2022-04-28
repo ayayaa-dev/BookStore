@@ -8,7 +8,7 @@ class AuthorModule{
             "firstname": firstname,
             "lastname": lastname,
             "birthYear": birthYear
-        }
+        };
         const promise = fetch('createNewAuthor',{
             method: 'POST',
             headers: {
@@ -68,7 +68,7 @@ class AuthorModule{
         const authorId = document.getElementById('select_authors').value;
         const object = {
             "authorId":authorId
-        }
+        };
         const promiseAuthor = fetch('getAuthor',{
             method: 'POST',
             headers: {
@@ -81,7 +81,7 @@ class AuthorModule{
                 .then(response =>{
                    if(response.status){
                        document.getElementById('info').value = response.info;
-                       document.getElementById('author_id').value = response.author.id
+                       document.getElementById('author_id').value = response.author.id;
                        document.getElementById('firstname').value = response.author.firstname;
                        document.getElementById('lastname').value = response.author.lastname;
                        document.getElementById('birth_year').value = response.author.birthYear;
@@ -102,7 +102,7 @@ class AuthorModule{
             "authorId": authorId,
             "firstname": firstname,
             "lastname": lastname,
-            "birthYear": birthYear,
+            "birthYear": birthYear
         };
         const promiseAuthor = fetch('updateAuthor',{
             method: 'POST',
