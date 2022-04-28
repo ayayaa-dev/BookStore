@@ -11,10 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- *
- * @author Melnikov
- */
+
 @Entity
 public class Role {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

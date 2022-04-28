@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import entity.Reader;
@@ -30,10 +25,6 @@ import session.UserFacade;
 import session.UserRolesFacade;
 import tools.PasswordProtected;
 
-/**
- *
- * @author Melnikov
- */
 @WebServlet(name = "LoginServlet", urlPatterns = {
     "/login",
     "/logout",
@@ -50,9 +41,9 @@ public class LoginServlet extends HttpServlet {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         if(userFacade.count()>0) return;
         Reader reader = new Reader();
-        reader.setFirstname("Juri");
-        reader.setLastname("Melnikov");
-        reader.setPhone("56656545656");
+        reader.setFirstname("Daniil");
+        reader.setLastname("Divissenko");
+        reader.setPhone("10100100011");
         readerFacade.create(reader);
         User user = new User();
         user.setLogin("admin");
