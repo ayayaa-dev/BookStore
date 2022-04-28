@@ -126,7 +126,8 @@ public class LoginServlet extends HttpServlet {
                     }
                     break;
                 }
-                Role role = userRolesFacade.getRoleForUser(authUser);
+                String roleName = userRolesFacade.getRoleForUser(authUser);
+                Role role = roleFacade.getRoleByName(roleName);
                 session = request.getSession(true);
                 session.setAttribute("authUser", authUser);
                 job.add("info", "Вы вошли как "+authUser.getLogin())

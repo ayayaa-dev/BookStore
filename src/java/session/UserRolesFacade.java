@@ -34,19 +34,18 @@ public class UserRolesFacade extends AbstractFacade<UserRoles> {
     public UserRolesFacade() {
         super(UserRoles.class);
     }
-    public Role getRoleForUser(User user){
+    public String getRoleForUser(User user){
         try {
             List<String> listRoleNamesForUser = 
                   em.createQuery("SELECT ur.role.roleName FROM UserRoles ur WHERE ur.user = :user")
                     .setParameter("user", user)
                     .getResultList();
             if(listRoleNamesForUser.contains("ADMINISTRATOR")){
-                Role role = roleFacade.getRoleByName("ADMINISTRATOR");
-                return role;
+                return "ADMINISTRATOR";
             }else if(listRoleNamesForUser.contains("MANAGER")){
-                return roleFacade.getRoleByName("MANAGER");
+                return "MANAGER";
             }else if(listRoleNamesForUser.contains("USER")){
-                return roleFacade.getRoleByName("USER");
+                return "USER";
             }
             return null;
         } catch (Exception e) {

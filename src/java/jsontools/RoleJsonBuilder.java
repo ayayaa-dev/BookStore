@@ -5,9 +5,7 @@
  */
 package jsontools;
 
-import entity.Author;
 import entity.Role;
-import entity.User;
 import java.util.List;
 import javax.json.Json;
 import javax.json.JsonArray;
