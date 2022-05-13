@@ -27,7 +27,7 @@ const menuPurchaces = document.getElementById("menu_purchaces");
 menuPurchaces.addEventListener('click', e => {
     e.preventDefault();
     activeBtnMenu(menuPurchaces);
-    //viewModule.showPurchaces();
+    //viewModule.showPurchacess();
 });
 const menuProfile = document.getElementById("menu_profile");
 menuProfile.addEventListener('click', e => {
