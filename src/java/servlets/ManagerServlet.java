@@ -1,43 +1,54 @@
 package servlets;
 
 import entity.Author;
-import entity.Reader;
-import entity.Role;
-import entity.User;
-import entity.UserRoles;
+import entity.Book;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+import javax.json.JsonValue;
+import javax.json.stream.JsonParser;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import jsontools.AuthorJsonBuilder;
+import jsontools.BookJsonBuilder;
 import session.AuthorFacade;
-import session.ReaderFacade;
-import session.RoleFacade;
-import session.UserFacade;
-import session.UserRolesFacade;
-import tools.PasswordProtected;
+import session.BookFacade;
 
 @WebServlet(name = "ManagerServlet", urlPatterns = {
     "/createNewAuthor",
     "/getListAuthors",
     "/getAuthor",
     "/updateAuthor",
+    "/createNewBook",
+    "/getListBooks",
+    "/getBook",
+    "/updateBook",
   
 })
+@MultipartConfig
 public class ManagerServlet extends HttpServlet {
     
     @EJB private AuthorFacade authorFacade;
-    
+    @EJB private BookFacade bookFacade;
     
     
     /**
@@ -126,7 +137,77 @@ public class ManagerServlet extends HttpServlet {
                     out.println(job.build().toString());
                 }
                 break;
+            case "/createNewBook":
+                String bookName = request.getParameter("bookName");
+                String publishedYear = request.getParameter("publishedYear");
+                String[] selectAuthors = request.getParameterValues("selectAuthors");
+                String price = request.getParameter("price");
+                if("".equals(bookName) || "".equals(publishedYear)
+                        || selectAuthors.length == 0 || "".equals(price)){
+                    job.add("info", "Заполните все поля!");
+                    job.add("status", false);
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println(job.build().toString());
+                    }
+                }
+                Book book = new Book();
+                book.setBookName(bookName);
+                book.setPublishedYear(Integer.parseInt(publishedYear));
+                List<Author> authors = new ArrayList<>();
+                for(int i=0; i < selectAuthors.length; i++){
+                    String jsonAuthorId = selectAuthors[i];
+                    authors.add(authorFacade.find(Long.parseLong(jsonAuthorId)));
+                }
+                book.setAuthor(authors);
+                book.setPrice(price);
+                book.setCover(getPathToCover(request.getPart("cover")));
+                bookFacade.create(book);
+                job.add("info", "Книга добавлена!");
+                    job.add("status", true);
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println(job.build().toString());
+                    }
+                break;
+            case "/getListBooks":
+                List<Book> listBooks = bookFacade.findAll();
+                BookJsonBuilder bjb = new BookJsonBuilder();
+                job.add("status",true);
+                job.add("info","Создан массив книг");
+                job.add("books",bjb.getBooksJsonArray(listBooks));
+                try (PrintWriter out = response.getWriter()) {
+                    out.println(job.build().toString());
+                }
+                break;
+            case "/getBook":
+                
+                break;
+            case "/updateBook":
+                
+                break;
         }
+    }
+    private String getPathToCover(Part part) throws IOException {
+        String uploadDir = "D:\\UploadDir\\JPTV20BookShop";
+        //String uploadDir = "/opt/UploadDir/JPTV20BookShop";
+        String pathToCover = uploadDir + File.separator + getFileName(part);
+        File file = new File(pathToCover);
+        file.mkdirs();
+        try(InputStream fileContent = part.getInputStream()){
+            Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+        return pathToCover;
+    }
+    private String getFileName(Part part){
+        final String partHeader = part.getHeader("content-disposition");
+        for (String content : part.getHeader("content-disposition").split(";")){
+            if(content.trim().startsWith("filename")){
+                return content
+                        .substring(content.indexOf('=')+1)
+                        .trim()
+                        .replace("\"",""); 
+            }
+        }
+        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -167,5 +248,4 @@ public class ManagerServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

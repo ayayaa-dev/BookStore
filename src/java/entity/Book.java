@@ -19,10 +19,18 @@ public class Book implements Serializable{
     private int publishedYear;
     @OneToOne
     private List<Author> author;
-    private int quantity;
-    private int count;
+    private String price;
+    private String cover;
 
     public Book() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getBookName() {
@@ -49,57 +57,39 @@ public class Book implements Serializable{
         this.author = author;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" 
-                + "bookName=" + bookName 
-                + ", publishedYear=" + publishedYear 
-                + ", author=" + Arrays.toString(author.toArray()) 
-                + ", quantity=" + quantity 
-                + ", count=" + count 
-                + '}';
+    public String getPrice() {
+        return price;
     }
 
-    
-
-    public int getQuantity() {
-        return quantity;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public String getCover() {
+        return cover;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
-        hash = 53 * hash + Objects.hashCode(this.bookName);
-        hash = 53 * hash + this.publishedYear;
-        hash = 53 * hash + Objects.hashCode(this.author);
-        hash = 53 * hash + this.quantity;
-        hash = 53 * hash + this.count;
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.bookName);
+        hash = 59 * hash + this.publishedYear;
+        hash = 59 * hash + Objects.hashCode(this.author);
+        hash = 59 * hash + Objects.hashCode(this.price);
+        hash = 59 * hash + Objects.hashCode(this.cover);
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
@@ -107,26 +97,43 @@ public class Book implements Serializable{
             return false;
         }
         final Book other = (Book) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (this.publishedYear != other.publishedYear) {
             return false;
         }
         if (!Objects.equals(this.bookName, other.bookName)) {
             return false;
         }
-        if (this.publishedYear != other.publishedYear) {
+        if (!Objects.equals(this.price, other.price)) {
+            return false;
+        }
+        if (!Objects.equals(this.cover, other.cover)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.author, other.author)) {
             return false;
         }
-        if (this.quantity != other.quantity) {
-            return false;
-        }
-        if (this.count != other.count) {
-            return false;
-        }
         return true;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.getAuthor().size(); i++) {
+            sb.append(this.getAuthor().get(i).getFirstname());
+            sb.append(" ");
+            sb.append(this.getAuthor().get(i).getLastname());
+            sb.append(". ");
+        }
+        return "Book{" 
+                + "id=" + id 
+                + ", bookName=" + bookName 
+                + ", publishedYear=" + publishedYear 
+                + ", author=" + sb.toString()
+                + ", price=" + price 
+                + ", cover=" + cover 
+                + '}';
+    }   
 }
