@@ -27,19 +27,16 @@ const menuPurchaces = document.getElementById("menu_purchaces");
 menuPurchaces.addEventListener('click', e => {
     e.preventDefault();
     activeBtnMenu(menuPurchaces);
-    //viewModule.showPurchacess();
 });
 const menuProfile = document.getElementById("menu_profile");
 menuProfile.addEventListener('click', e => {
     e.preventDefault();
     activeBtnMenu(menuProfile);
-    //viewModule.showProfile();
 });
 const menuAdminPanel = document.getElementById("menu_admin_panel");
 menuAdminPanel.addEventListener('click', e => {
     e.preventDefault();
     activeBtnMenu(menuAdminPanel);
-    //viewModule.showAdminPanel();
 });
 const menuLogin = document.getElementById("menu_login");
 menuLogin.addEventListener('click',(e)=>{
@@ -214,6 +211,5 @@ function checkMenu() {
         }
         return;
     }
-}checkMenu();
-
-
+}
+checkMenu();

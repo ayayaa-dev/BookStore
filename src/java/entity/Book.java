@@ -68,6 +68,9 @@ public class Book implements Serializable{
     public String getCover() {
         return cover;
     }
+    public String getCoverFileName() {
+        return cover.substring(cover.lastIndexOf("/"), cover.length()-1);
+    }
 
     public void setCover(String cover) {
         this.cover = cover;

@@ -83,7 +83,7 @@ class ViewModule{
         const content = document.getElementById('content');
         content.innerHTML = 
            `<form id="newBookForm"><div class="card border-secondary mb-3 mx-auto" style="max-width: 30rem;">
-                <h3 class="card-header w-100 text-center ">Новая книга</h3>
+                <h3 class="card-header w-100 text-center " id="book_form_title">Новая книга</h3>
                 <div class="card-body">
                   <div class="form-group">
                     <label for="bookName" class="form-label mt-4">Название книги</label>
@@ -106,7 +106,13 @@ class ViewModule{
                     <label for="cover" class="form-label mt-4">Обложка</label>
                     <input type="file" class="form-control" id="cover" name="cover" placeholder="Обложка">
                   </div>
+                  <div class="form-group mb-4">
+                    <label for="list_covers" class=" col-form-label mt-2">Список загруженных обложек</label>
+                    <select class="col-sm-10 form-select form-control-plaintext" id="list_covers" name="coverFileName">
+                    </select>
+                  </div>
                   <button id="btn_add_book" type="submit" class="btn btn-primary my-3">Добавить книгу</button>
+                  <button id="btn_update_book" type="submit" class="btn btn-primary my-3 d-none">Изменить данные книги</button>
                 </div>
             </div>
             <div class="card border-0 mb-3 mx-auto" style="max-width: 50rem;">
@@ -119,12 +125,20 @@ class ViewModule{
                         </div>
                 </div>
             </div></form>`;
+        bookModule.insertListCovers();
         document.getElementById('newBookForm').addEventListener('submit',e => {
             e.preventDefault();
             bookModule.createNewBook();
         });
         authorModule.insertListAuthors(false);
         bookModule.insertBookOptions(true);
+        document.getElementById('list_books').addEventListener('change', e=>{
+            e.preventDefault();
+            bookModule.editBook();
+            document.getElementById('btn_update_book').classList.remove('d-none');
+            document.getElementById('btn_add_book').classList.add('d-none');
+            document.getElementById('book_form_title').innerHTML = 'Изменение данных книги';
+        });
     };
 }
 const viewModule = new ViewModule();
